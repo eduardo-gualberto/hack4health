@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
-
 import 'package:hack4health/pages/Medidas.dart';
 import 'package:hack4health/pages/Home.dart';
-
+import 'package:hack4health/pages/Chat.dart';
 
 class Tela extends StatefulWidget {
   const Tela({Key? key}) : super(key: key);
@@ -18,7 +16,7 @@ class _TelaState extends State<Tela> {
   static List<Widget> _widgetOptions = <Widget>[
     Medidas(),
     Home(),
-    //Chat(),
+    Chat(),
   ];
 
   void _onItemTapped(int index) {
@@ -30,17 +28,19 @@ class _TelaState extends State<Tela> {
   @override
   @override
   Widget build(BuildContext context) {
-    final ButtonStyle style =
-        TextButton.styleFrom(primary: Theme.of(context).colorScheme.onPrimary);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Bem vindo, Paulo!'),
         backgroundColor: Colors.green[800],
         actions: <Widget>[
-          TextButton(
-            style: style,
+          IconButton(
+            icon: Icon(
+              Icons.star,
+              color: Colors.yellow,
+            ),
+            tooltip: 'Score',
             onPressed: () {},
-            child: const Text('Score'),
           )
         ],
       ),

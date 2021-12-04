@@ -25,13 +25,6 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
 
   @override
   Widget build(BuildContext context) {
-    final nomeTxt = TextField(
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0)),
-        hintText: 'Digite seu nome'
-      ),
-    );
 
     return Scaffold(
       appBar: AppBar(
@@ -44,7 +37,21 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
             padding: const EdgeInsets.all(40.0),
             child: Column(
               children: <Widget>[
-                nomeTxt,
+                Container(
+                  height: 120,
+                ),
+                TextField(
+                  cursorColor: Colors.green[800],
+                  decoration: InputDecoration(
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.green, width: 2.0),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey, width: 2.0),
+                    ),
+                  hintText: 'Digite seu nome'
+                  ),
+                ),
                 Container(
                   height: 30,
                 ),
@@ -52,26 +59,30 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                   obscureText: true,
                   enableSuggestions: false,
                   autocorrect: false,
+                  cursorColor: Colors.green[800],
                   decoration: InputDecoration(
-                    fillColor: Colors.green[800],
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0)),
-                      //borderColor: Colors.white,
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.green, width: 2.0),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey, width: 2.0),
+                      ),
                     hintText: 'Digite sua senha'
                   ),
                 ),
                 Container(
-                  height: 50,
+                  height: 100,
                 ),
-                TextButton(
-                  style: TextButton.styleFrom(
-                    backgroundColor: Colors.green[800],
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.green[800],
+                    onSurface: Colors.green,
+                    elevation: 5,
+                    shadowColor: Colors.green[800],
                   ),
                   child: Text(
                     'Entrar',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
+                    style: TextStyle(fontSize: 20),
                   ),
                   onPressed: () {
                     Navigator.pushReplacement(
