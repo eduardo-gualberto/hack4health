@@ -14,22 +14,6 @@ class _MedidasState extends State<Medidas> {
   List<SensorValue> data = [];
   int bpmValue = 0;
   bool enableBPM = false;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Medidas',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 1: Home',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 2: Chat',
-      style: optionStyle,
-    ),
-  ];
 
   double freq_c_progress = 0;
   bool btn_disable = false;
@@ -75,17 +59,6 @@ class _MedidasState extends State<Medidas> {
     final ButtonStyle style =
         TextButton.styleFrom(primary: Theme.of(context).colorScheme.onPrimary);
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Medidas'),
-        backgroundColor: Colors.green[800],
-        actions: <Widget>[
-          TextButton(
-            style: style,
-            onPressed: () {},
-            child: const Text('Score'),
-          )
-        ],
-      ),
       body: Column(
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -356,28 +329,6 @@ class _MedidasState extends State<Medidas> {
           )
         ],
       ), // This trailing comma makes auto-formatting nicer for build methods.
-      /*body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
-      ),*/
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.addchart),
-            label: 'Medidas',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.chat),
-            label: 'Chat',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.green[800],
-        onTap: _onItemTapped,
-      ),
     );
   }
 }
