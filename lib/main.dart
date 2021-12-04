@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './pages/Medidas.dart';
+import 'package:hack4health/pages/Login.dart';
 
 void main() => runApp(const MyApp());
 
@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       title: _title,
-      home: Medidas(),
+      home: LoginPage(),
     );
   }
 }

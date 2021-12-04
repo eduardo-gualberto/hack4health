@@ -33,6 +33,9 @@ class _MedidasState extends State<Medidas> {
 
   double freq_c_progress = 0;
   bool btn_disable = false;
+  String stress_option = "Baixo";
+  String depression_option = "Baixo";
+  String ativ_fis = "Nenhuma";
 
   int getMeanBPM() {
     double acc_bpm = 0;
@@ -90,7 +93,7 @@ class _MedidasState extends State<Medidas> {
             padding: const EdgeInsets.all(12.0),
             child: Text(
               "Tirar medidas cardíacas:",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
           ),
           enableBPM
@@ -119,14 +122,15 @@ class _MedidasState extends State<Medidas> {
                 Column(
                   children: [
                     SizedBox(
-                      width: 70,
-                      height: 70,
+                      width: 90,
+                      height: 90,
                       child: FloatingActionButton(
-                        backgroundColor: btn_disable ? Colors.green[800] : Colors.red,
+                        backgroundColor:
+                            btn_disable ? Colors.green[800] : Colors.red,
                         onPressed: btn_disable ? null : onAferirFreqCardiaca,
                         child: Icon(
                           Icons.favorite,
-                          size: 40,
+                          size: 50,
                         ),
                       ),
                     ),
@@ -134,24 +138,191 @@ class _MedidasState extends State<Medidas> {
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
                         btn_disable ? "Pronto" : "Iniciar",
-                        style: TextStyle(fontSize: 15),
+                        style: TextStyle(fontSize: 18),
                       ),
                     )
                   ],
                 ),
                 Text('$bpmValue BPM',
                     style:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               ],
             ),
           ),
           enableBPM
               ? Center(
                   child: LinearProgressIndicator(
-                    color: Colors.green[800],
+                  color: Colors.green[800],
                   value: freq_c_progress,
                 ))
               : Container(),
+          Container(height: 40,),
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Text(
+              "Outras informações:",
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: Column(
+                    children: [
+                      Align(
+                        child: Text("Peso"),
+                        alignment: Alignment.centerLeft,
+                      ),
+                      TextField(
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: "Ex.: 82,5 (kg)",
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Text("Nível de Estresse"),
+                      DropdownButton(
+                        value: stress_option,
+                        icon: const Icon(Icons.arrow_downward),
+                        elevation: 16,
+                        underline: Container(
+                          height: 2,
+                          color: Colors.green[800],
+                        ),
+                        onChanged: (String? newValue) {
+                          FocusScope.of(context).requestFocus(FocusNode());
+                          setState(() {
+                            stress_option = newValue!;
+                          });
+                        },
+                        onTap: () {
+                          FocusManager.instance.primaryFocus!.unfocus();
+                        },
+                        items: <String>[
+                          'Baixo',
+                          'Moderado',
+                          'Alto',
+                          'Muito Alto'
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(10),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Text("Nível de Desânimo"),
+                      DropdownButton(
+                        value: depression_option,
+                        icon: const Icon(Icons.arrow_downward),
+                        elevation: 16,
+                        underline: Container(
+                          height: 2,
+                          color: Colors.green[800],
+                        ),
+                        onChanged: (String? newValue) {
+                          FocusScope.of(context).requestFocus(FocusNode());
+                          setState(() {
+                            depression_option = newValue!;
+                          });
+                        },
+                        onTap: () {
+                          FocusManager.instance.primaryFocus!.unfocus();
+                        },
+                        items: <String>[
+                          'Baixo',
+                          'Moderado',
+                          'Alto',
+                          'Muito Alto'
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Text("Atividade Física"),
+                      DropdownButton(
+                        value: ativ_fis,
+                        icon: const Icon(Icons.arrow_downward),
+                        elevation: 16,
+                        underline: Container(
+                          height: 2,
+                          color: Colors.green[800],
+                        ),
+                        onChanged: (String? newValue) {
+                          FocusScope.of(context).requestFocus(FocusNode());
+                          setState(() {
+                            ativ_fis = newValue!;
+                          });
+                        },
+                        onTap: () {
+                          FocusManager.instance.primaryFocus!.unfocus();
+                        },
+                        items: <String>[
+                          'Nenhuma',
+                          'Leve',
+                          'Moderada',
+                          'Intensa'
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Center(
+                  child: SizedBox(
+                      width: 120,
+                      height: 50,
+                      child: ElevatedButton(
+                          onPressed: () {},
+                          child: Text(
+                            "Enviar",
+                            style: TextStyle(fontSize: 17),
+                          )))),
+            ),
+          )
         ],
       ), // This trailing comma makes auto-formatting nicer for build methods.
       /*body: Center(
