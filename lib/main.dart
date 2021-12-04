@@ -61,7 +61,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         TextButton.styleFrom(primary: Theme.of(context).colorScheme.onPrimary);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Bem vindo, Fulano!'),
+        title: const Text('Bem vindo, Paulo!'),
         backgroundColor: Colors.green[800],
         actions: <Widget>[
           TextButton(
