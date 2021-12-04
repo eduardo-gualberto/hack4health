@@ -122,7 +122,7 @@ class _MedidasState extends State<Medidas> {
                       width: 70,
                       height: 70,
                       child: FloatingActionButton(
-                        backgroundColor: btn_disable ? Colors.grey : Colors.blue,
+                        backgroundColor: btn_disable ? Colors.green[800] : Colors.red,
                         onPressed: btn_disable ? null : onAferirFreqCardiaca,
                         child: Icon(
                           Icons.favorite,
@@ -133,7 +133,7 @@ class _MedidasState extends State<Medidas> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        "Iniciar",
+                        btn_disable ? "Pronto" : "Iniciar",
                         style: TextStyle(fontSize: 15),
                       ),
                     )
