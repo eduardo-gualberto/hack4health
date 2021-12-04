@@ -348,6 +348,7 @@ class _MedidasState extends State<Medidas> {
                       height: 50,
                       child: ElevatedButton(
                           onPressed: () {},
+                          style: ElevatedButton.styleFrom(primary: Colors.green[800]),
                           child: Text(
                             "Enviar",
                             style: TextStyle(fontSize: 17),
