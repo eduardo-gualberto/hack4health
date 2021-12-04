@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hack4health/pages/Medidas.dart';
+import 'package:hack4health/pages/Tela.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -33,37 +33,6 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
       ),
     );
 
-    final senhaTxt = TextField(
-      obscureText: true,
-      enableSuggestions: false,
-      autocorrect: false,
-      decoration: InputDecoration(
-        fillColor: Colors.green[800],
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0)),
-          //borderColor: Colors.white,
-        hintText: 'Digite seu senha'
-      ),
-    );
-
-    final botaoLogin = TextButton(
-      style: TextButton.styleFrom(
-        backgroundColor: Colors.green[800],
-      ),
-      child: Text(
-        'Entrar',
-        style: TextStyle(
-          color: Colors.white,
-        ),
-      ),
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => Medidas()),
-        );
-      },
-    );
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Login'),
@@ -88,7 +57,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0)),
                       //borderColor: Colors.white,
-                    hintText: 'Digite seu senha'
+                    hintText: 'Digite sua senha'
                   ),
                 ),
                 Container(
@@ -107,7 +76,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                   onPressed: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => Medidas()),
+                      MaterialPageRoute(builder: (context) => Tela()),
                     );
                   },
                 ),
