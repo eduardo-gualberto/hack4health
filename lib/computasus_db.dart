@@ -16,10 +16,11 @@ void main() async {
     onCreate: (db, version) {
       return db.execute('CREATE TABLE Usuario(id INTEGER PRIMARY KEY, nome TEXT NOT NULL, email TEXT NOT NULL, senha TEXT NOT NULL, idade INTEGER NOT NULL, documento TEXT NOT NULL,' +
           'data_nascimento DATE NOT NULL, altura INTEGER, crm INTEGER, tipo_usuario BIT NOT NULL);\n ' +
-          'CREATE TABLE Medicao(horario DATETIME, id_paciente INTEGER, peso FLOAT, stress INTEGER, desanimo INTEGER, atv_fisca INTEGER)' +
+          'CREATE TABLE Medicao(horario VARCHAR, id_paciente INTEGER, peso FLOAT, stress INTEGER, desanimo INTEGER, atv_fisca INTEGER)' +
           '\nCONSTRAINT pk_medicao primary key(horario,id_paciente)\n' +
           'CONSTRAINT fk_paciente FOREIGN KEY(id_paciente) REFERENCES Usuario(id);\n' +
-          'CREATE TABLE Atende(id_profissional, id_paciente)\n CONSTRAINT pk_atende PRIMARY KEY(id_profissional,id_paciente)\n' +
+          'CREATE TABLE Atende(id_profissional INTEGER, id_paciente INTEGER)' +
+          '\nCONSTRAINT pk_atende PRIMARY KEY(id_profissional,id_paciente)\n' +
           'CONSTRAINT fk_profissional FOREIGN KEY(id_profissional) REFERENCES Usuario(id)\n' +
           'CONSTRAINT fk_paciente FOREIGN KEY(id_paciente) REFERENCES Usuario(id);');
     },
@@ -156,6 +157,42 @@ void main() async {
       whereArgs: [id_profissional, id_paciente],
     );
   }
+
+  var paulo = Usuario(
+    id: PAULO_KEY,
+    nome: 'Paulo',
+    email: 'paulo@gmail.com',
+    senha: '123',
+    idade: 38,
+    documento: 'doc',
+    dataNascimento: '1983-04-12',
+    altura: 170,
+    crm: '',
+    tipoUsuario: 0,
+  );
+  var alberto = Usuario(
+    id: ALBERTO_KEY,
+    nome: 'alberto',
+    email: 'alberto@gmail.com',
+    senha: '1234',
+    idade: 50,
+    documento: '33',
+    dataNascimento: '1971-03-21',
+    altura: 172,
+    crm: '111',
+    tipoUsuario: 1,
+  );
+  var atendimento = Atende(
+    id_paciente: PAULO_KEY,
+    id_profissional: ALBERTO_KEY,
+  );
+
+  await insertUsuario(paulo);
+  await insertUsuario(alberto);
+  await insertAtende(atendimento);
+
+  print(usuario());
+  print(atende());
 }
 
 class Usuario {
@@ -165,7 +202,7 @@ class Usuario {
   final String senha;
   final int idade;
   final String documento;
-  final DateTime dataNascimento;
+  final String dataNascimento;
   int altura;
   String crm;
   final int tipoUsuario;
