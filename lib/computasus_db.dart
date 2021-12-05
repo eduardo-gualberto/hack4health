@@ -16,7 +16,10 @@ void main() async {
     onCreate: (db, version) {
       return db.execute(
           'CREATE TABLE Usuario(id INTEGER PRIMARY KEY, nome TEXT NOT NULL, email TEXT NOT NULL, senha TEXT NOT NULL, idade INTEGER NOT NULL, documento TEXT NOT NULL,' +
-              'data_nascimento VARCHAR(20) NOT NULL, altura INTEGER, crm INTEGER, tipo_usuario BIT NOT NULL) ');
+              'data_nascimento DATE NOT NULL, altura INTEGER, crm INTEGER, tipo_usuario BIT NOT NULL);\n ' +
+              'CREATE TABLE Medicao(horario DATETIME, id_paciente INTEGER, peso FLOAT, stress INTEGER, desanimo INTEGER, atv_fisca INTEGER)' +
+              '\nCONSTRAINT pk_medicao primary key(horario,id_paciente)\n' +
+              'CONSTRAINT fk_paciente FOREIGN KEY(id_paciente) REFERENCES Usuario(id)');
     },
     version: 1,
   );
@@ -27,6 +30,16 @@ void main() async {
     await db.insert(
       'usuario',
       usuario.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<void> insertMedicao(Medicao medicao) async {
+    final db = await database;
+
+    await db.insert(
+      'usuario',
+      medicao.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
@@ -52,6 +65,23 @@ void main() async {
     });
   }
 
+  Future<List<Medicao>> medicao() async {
+    final db = await database;
+
+    final List<Map<String, dynamic>> maps = await db.query('medicao');
+
+    return List.generate(maps.length, (i) {
+      return Medicao(
+        horario: maps[i]['horario'],
+        id_paciente: maps[i]['id_paciente'],
+        peso: maps[i]['peso'],
+        stress: maps[i]['stress'],
+        desanimo: maps[i]['desanimo'],
+        atv_fisica: maps[i]['atv_fisica'],
+      );
+    });
+  }
+
   Future<void> updateUsuario(Usuario usuario) async {
     final db = await database;
     await db.update(
@@ -59,6 +89,16 @@ void main() async {
       usuario.toMap(),
       where: 'id = ?',
       whereArgs: [usuario.id],
+    );
+  }
+
+  Future<void> updateMedicao(Medicao medicao) async {
+    final db = await database;
+    await db.update(
+      'medicao',
+      medicao.toMap(),
+      where: '(horario,id_paciente) = ?',
+      whereArgs: [medicao.horario, medicao.id_paciente],
     );
   }
 
@@ -71,6 +111,16 @@ void main() async {
       whereArgs: [id],
     );
   }
+
+  Future<void> deleteMedicao(DateTime horario, int id_paciente) async {
+    final db = await database;
+
+    await db.delete(
+      'Medicao',
+      where: '(horario,id_paciente) = ?',
+      whereArgs: [horario, id_paciente],
+    );
+  }
 }
 
 class Usuario {
@@ -80,7 +130,7 @@ class Usuario {
   final String senha;
   final int idade;
   final String documento;
-  final String dataNascimento;
+  final DateTime dataNascimento;
   int altura;
   String crm;
   final int tipoUsuario;
@@ -115,5 +165,40 @@ class Usuario {
   String toString() {
     return 'Usuario{id: $id, npme: $nome, age: $idade, email: $email, senha: $senha, documento: $documento, ' +
         'data_nascimento: $dataNascimento, altura: $altura, crm: $crm, tipo_usuario: $tipoUsuario}';
+  }
+}
+
+class Medicao {
+  final DateTime horario;
+  final int id_paciente;
+  final double peso;
+  final int stress;
+  final int desanimo;
+  final int atv_fisica;
+
+  Medicao({
+    required this.horario,
+    required this.id_paciente,
+    required this.peso,
+    required this.stress,
+    required this.desanimo,
+    required this.atv_fisica,
+  });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'horario': horario,
+      'id_paciente': id_paciente,
+      'peso': peso,
+      'stress': stress,
+      'desanimo': desanimo,
+      'atv_fisica': atv_fisica,
+    };
+  }
+
+  @override
+  String toString() {
+    return 'Medicao{horario: $horario, id_paciente: $id_paciente, peso: $peso, stress: $stress, desanimo: $desanimo, ' +
+        'atv_fisica: $atv_fisica}';
   }
 }
