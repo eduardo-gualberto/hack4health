@@ -135,7 +135,7 @@ void main() async {
       atv_fisica: 0);
 
   var medida9 = Medicao(
-      horario: "2021-12-01 09:13:02Z",
+      horario: "2021-12-01 09:13:02",
       id_paciente: 1,
       freq: 72,
       peso: 64.9,
@@ -144,7 +144,7 @@ void main() async {
       atv_fisica: 1);
 
   var medida10 = Medicao(
-      horario: "2021-12-02 11:13:02Z",
+      horario: "2021-12-02 11:13:02",
       id_paciente: 1,
       freq: 69,
       peso: 65.2,
@@ -153,7 +153,7 @@ void main() async {
       atv_fisica: 1);
 
   var medida11 = Medicao(
-      horario: "2021-12-03 10:15:32Z",
+      horario: "2021-12-03 10:15:32",
       id_paciente: 1,
       freq: 87,
       peso: 65.1,
@@ -162,7 +162,7 @@ void main() async {
       atv_fisica: 1);
 
   var medida12 = Medicao(
-      horario: "2021-12-04 11:12:23Z",
+      horario: "2021-12-04 11:12:23",
       id_paciente: 1,
       freq: 65,
       peso: 65.3,

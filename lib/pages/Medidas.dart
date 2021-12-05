@@ -325,7 +325,7 @@ class _MedidasState extends State<Medidas> {
                                 DateFormat('yyyy-MM-dd – kk:mm').format(now);
                             var medida = Medicao(
                               horario: formattedDate,
-                              id_paciente: 1,
+                              id_paciente: 1234,
                               freq: this.bpmValue,
                               peso: double.parse(this.peso),
                               stress: this.dict[this.stress_option]!,
