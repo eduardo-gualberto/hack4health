@@ -12,7 +12,7 @@ void main() async {
     join(await getDatabasesPath(), 'computasus.db'),
     onCreate: (db, version) {
       return db.execute(
-          'CREATE TABLE Usuario(id INTEGER PRIMARY KEY, nome TEXT NOT NULL, email TEXT NOT NULL, senha TEXT NOT NULL, Documento TEXT NOT NULL,' +
+          'CREATE TABLE Usuario(id INTEGER PRIMARY KEY, nome TEXT NOT NULL, email TEXT NOT NULL, senha TEXT NOT NULL, idade INTEGER NOT NULL, documento TEXT NOT NULL,' +
               'data_nascimento DATE NOT NULL, altura INTEGER, crm INTEGER, tipo_usuario BIT NOT NULL) ');
     },
     version: 1,
@@ -34,16 +34,17 @@ void main() async {
     final List<Map<String, dynamic>> maps = await db.query('usuario');
 
     return List.generate(maps.length, (i) {
-      return usuario(
+      return Usuario(
         id: maps[i]['id'],
         nome: maps[i]['nome'],
         email: maps[i]['email'],
         senha: maps[i]['senha'],
+        idade: maps[i]['idade'],
         documento: maps[i]['documento'],
-        data_nascimento: maps[i]['data_nascimento'],
+        dataNascimento: maps[i]['dataNascimento'],
         altura: maps[i]['altura'],
         crm: maps[i]['crm'],
-        tipo_usuario: maps[i]['tipo_usuario'],
+        tipoUsuario: maps[i]['tipoUsuario'],
       );
     });
   }
@@ -74,37 +75,42 @@ class Usuario {
   final String nome;
   final String email;
   final String senha;
+  final int idade;
   final String documento;
-  final DateTime data_nasciemnto;
-  final int altura;
-  final String crm;
-  final int tipo_usuario;
+  final DateTime dataNascimento;
+  int altura;
+  String crm;
+  final int tipoUsuario;
 
   Usuario({
     required this.id,
     required this.nome,
     required this.email,
     required this.senha,
+    required this.idade,
     required this.documento,
-    required this.data_nascimento,
-    required this.tipo_usuario,
+    required this.dataNascimento,
+    required this.tipoUsuario,
+    this.altura = 0,
+    this.crm = "",
   });
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'nome': name,
-      'email': age,
+      'nome': nome,
+      'email': email,
       'senha': senha,
+      'idade': idade,
       'documento': documento,
-      'data_nascimento': data_nascimento,
-      'tipo_usuario': tipo_usuario,
+      'data_nascimento': dataNascimento,
+      'tipo_usuario': tipoUsuario,
     };
   }
 
   @override
   String toString() {
     return 'Usuario{id: $id, npme: $nome, age: $idade, email: $email, senha: $senha, documento: $documento, ' +
-        'data_nascimento: $data_nascimento, altura: $altura, crm: $crm, tipo_usuario: $tipo_usuario}';
+        'data_nascimento: $dataNascimento, altura: $altura, crm: $crm, tipo_usuario: $tipoUsuario}';
   }
 }
