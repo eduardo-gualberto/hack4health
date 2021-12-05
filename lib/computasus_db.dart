@@ -13,16 +13,16 @@ void main() async {
 
   final database = openDatabase(
     join(await getDatabasesPath(), 'computasus.db'),
-    onCreate: (db, version) {
-      return db.execute('CREATE TABLE Usuario(id INTEGER PRIMARY KEY, nome TEXT NOT NULL, email TEXT NOT NULL, senha TEXT NOT NULL, idade INTEGER NOT NULL, documento TEXT NOT NULL,' +
-          'data_nascimento DATE NOT NULL, altura INTEGER, crm INTEGER, tipo_usuario BIT NOT NULL);\n ' +
-          'CREATE TABLE Medicao(horario VARCHAR, id_paciente INTEGER, peso FLOAT, stress INTEGER, desanimo INTEGER, atv_fisca INTEGER)' +
-          '\nCONSTRAINT pk_medicao primary key(horario,id_paciente)\n' +
-          'CONSTRAINT fk_paciente FOREIGN KEY(id_paciente) REFERENCES Usuario(id);\n' +
-          'CREATE TABLE Atende(id_profissional INTEGER, id_paciente INTEGER)' +
-          '\nCONSTRAINT pk_atende PRIMARY KEY(id_profissional,id_paciente)\n' +
-          'CONSTRAINT fk_profissional FOREIGN KEY(id_profissional) REFERENCES Usuario(id)\n' +
-          'CONSTRAINT fk_paciente FOREIGN KEY(id_paciente) REFERENCES Usuario(id);');
+    onCreate: (db, version) async {
+      await db.execute('CREATE TABLE Usuario(id INTEGER PRIMARY KEY, nome TEXT NOT NULL, email TEXT NOT NULL, senha TEXT NOT NULL, idade INTEGER NOT NULL, documento TEXT NOT NULL,' +
+          'data_nascimento TEXT NOT NULL, altura INTEGER, crm INTEGER, tipo_usuario BIT NOT NULL);');
+      await db.execute('CREATE TABLE Medicao(horario TEXT, id_paciente INTEGER, peso FLOAT, stress INTEGER, desanimo INTEGER, atv_fisca INTEGER,' +
+          'CONSTRAINT pk_medicao primary key(horario,id_paciente),' +
+          'CONSTRAINT fk_paciente FOREIGN KEY(id_paciente) REFERENCES Usuario(id));');
+      await db.execute('CREATE TABLE Atende(id_profissional INTEGER, id_paciente INTEGER,'+
+          'CONSTRAINT pk_atende PRIMARY KEY(id_profissional,id_paciente),'+
+          'CONSTRAINT fk_profissional FOREIGN KEY(id_profissional) REFERENCES Usuario(id),' +
+          'CONSTRAINT fk_paciente FOREIGN KEY(id_paciente) REFERENCES Usuario(id));');
     },
     version: 1,
   );
@@ -49,7 +49,6 @@ void main() async {
 
   Future<void> insertAtende(Atende atende) async {
     final db = await database;
-
     await db.insert(
       'atende',
       atende.toMap(),
@@ -187,12 +186,29 @@ void main() async {
     id_profissional: ALBERTO_KEY,
   );
 
+
+  Database db = await database;
+  await db.execute("DROP TABLE IF EXISTS Usuario;");
+  await db.execute("DROP TABLE IF EXISTS Medicao;");
+  await db.execute("DROP TABLE IF EXISTS Atende;");
+
+  await db.execute('CREATE TABLE Usuario(id INTEGER PRIMARY KEY, nome TEXT NOT NULL, email TEXT NOT NULL, senha TEXT NOT NULL, idade INTEGER NOT NULL, documento TEXT NOT NULL,' +
+      'data_nascimento DATE NOT NULL, altura INTEGER, crm INTEGER, tipo_usuario BIT NOT NULL);');
+  await db.execute('CREATE TABLE Medicao(horario TEXT, id_paciente INTEGER, peso FLOAT, stress INTEGER, desanimo INTEGER, atv_fisca INTEGER,' +
+      'CONSTRAINT pk_medicao primary key(horario,id_paciente),' +
+      'CONSTRAINT fk_paciente FOREIGN KEY(id_paciente) REFERENCES Usuario(id));');
+  await db.execute('CREATE TABLE Atende(id_profissional INTEGER, id_paciente INTEGER,'+
+      'CONSTRAINT pk_atende PRIMARY KEY(id_profissional,id_paciente),'+
+      'CONSTRAINT fk_profissional FOREIGN KEY(id_profissional) REFERENCES Usuario(id),' +
+      'CONSTRAINT fk_paciente FOREIGN KEY(id_paciente) REFERENCES Usuario(id));');
+
+
   await insertUsuario(paulo);
   await insertUsuario(alberto);
   await insertAtende(atendimento);
 
-  print(usuario());
-  print(atende());
+  print(await usuario());
+  print(await atende());
 }
 
 class Usuario {
