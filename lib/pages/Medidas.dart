@@ -18,6 +18,7 @@ class _MedidasState extends State<Medidas> {
 
   double freq_c_progress = 0;
   bool btn_disable = false;
+  String peso = "";
   String stress_option = "Baixo";
   String depression_option = "Baixo";
   String ativ_fis = "Nenhuma";
@@ -78,23 +79,6 @@ class _MedidasState extends State<Medidas> {
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
           ),
-          // enableBPM
-          //     ? Center(
-          //         child: HeartBPMDialog(
-          //           sampleDelay: 1000 ~/ 30,
-          //           context: context,
-          //           onRawData: (value) {
-          //             setState(() {
-          //               if (data.length == 100) data.removeAt(0);
-          //               data.add(value);
-          //             });
-          //           },
-          //           onBPM: (value) => setState(() {
-          //             bpmValue = getMeanBPM();
-          //           }),
-          //         ),
-          //       )
-          //     : SizedBox(),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
@@ -193,6 +177,10 @@ class _MedidasState extends State<Medidas> {
                             border: OutlineInputBorder(),
                             hintText: "Ex.: 82,5 (kg)",
                           ),
+                          onChanged: (value){
+                            peso = value;
+                            print(peso);
+                          },
                         ),
                       ],
                     ),

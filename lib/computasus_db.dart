@@ -1,161 +1,33 @@
 import 'dart:async';
 
 import 'package:flutter/widgets.dart';
-
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+
+Future<Database> getDatabase() async{
+  final database = openDatabase(
+      join(await getDatabasesPath(), 'computasus.db'),
+      onCreate: (db, version) async {
+  await db.execute('CREATE TABLE Usuario(id INTEGER PRIMARY KEY, nome TEXT NOT NULL, email TEXT NOT NULL, senha TEXT NOT NULL, idade INTEGER NOT NULL, documento TEXT NOT NULL,' +
+  'data_nascimento TEXT NOT NULL, altura INTEGER, crm INTEGER, tipo_usuario BIT NOT NULL);');
+  await db.execute('CREATE TABLE Medicao(horario TEXT, id_paciente INTEGER, peso FLOAT, stress INTEGER, desanimo INTEGER, atv_fisca INTEGER,' +
+  'CONSTRAINT pk_medicao primary key(horario,id_paciente),' +
+  'CONSTRAINT fk_paciente FOREIGN KEY(id_paciente) REFERENCES Usuario(id));');
+  await db.execute('CREATE TABLE Atende(id_profissional INTEGER, id_paciente INTEGER,'+
+  'CONSTRAINT pk_atende PRIMARY KEY(id_profissional,id_paciente),'+
+  'CONSTRAINT fk_profissional FOREIGN KEY(id_profissional) REFERENCES Usuario(id),' +
+  'CONSTRAINT fk_paciente FOREIGN KEY(id_paciente) REFERENCES Usuario(id));');
+  },
+  version: 1,
+  );
+  return database;
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   int PAULO_KEY = 1234;
   int ALBERTO_KEY = 5678;
-
-  final database = openDatabase(
-    join(await getDatabasesPath(), 'computasus.db'),
-    onCreate: (db, version) async {
-      await db.execute('CREATE TABLE Usuario(id INTEGER PRIMARY KEY, nome TEXT NOT NULL, email TEXT NOT NULL, senha TEXT NOT NULL, idade INTEGER NOT NULL, documento TEXT NOT NULL,' +
-          'data_nascimento TEXT NOT NULL, altura INTEGER, crm INTEGER, tipo_usuario BIT NOT NULL);');
-      await db.execute('CREATE TABLE Medicao(horario TEXT, id_paciente INTEGER, peso FLOAT, stress INTEGER, desanimo INTEGER, atv_fisca INTEGER,' +
-          'CONSTRAINT pk_medicao primary key(horario,id_paciente),' +
-          'CONSTRAINT fk_paciente FOREIGN KEY(id_paciente) REFERENCES Usuario(id));');
-      await db.execute('CREATE TABLE Atende(id_profissional INTEGER, id_paciente INTEGER,'+
-          'CONSTRAINT pk_atende PRIMARY KEY(id_profissional,id_paciente),'+
-          'CONSTRAINT fk_profissional FOREIGN KEY(id_profissional) REFERENCES Usuario(id),' +
-          'CONSTRAINT fk_paciente FOREIGN KEY(id_paciente) REFERENCES Usuario(id));');
-    },
-    version: 1,
-  );
-
-  Future<void> insertUsuario(Usuario usuario) async {
-    final db = await database;
-
-    await db.insert(
-      'usuario',
-      usuario.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
-  }
-
-  Future<void> insertMedicao(Medicao medicao) async {
-    final db = await database;
-
-    await db.insert(
-      'medicao',
-      medicao.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
-  }
-
-  Future<void> insertAtende(Atende atende) async {
-    final db = await database;
-    await db.insert(
-      'atende',
-      atende.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
-  }
-
-  Future<List<Usuario>> usuario() async {
-    final db = await database;
-
-    final List<Map<String, dynamic>> maps = await db.query('usuario');
-
-    return List.generate(maps.length, (i) {
-      return Usuario(
-        id: maps[i]['id'],
-        nome: maps[i]['nome'],
-        email: maps[i]['email'],
-        senha: maps[i]['senha'],
-        idade: maps[i]['idade'],
-        documento: maps[i]['documento'],
-        dataNascimento: maps[i]['dataNascimento'],
-        altura: maps[i]['altura'],
-        crm: maps[i]['crm'],
-        tipoUsuario: maps[i]['tipoUsuario'],
-      );
-    });
-  }
-
-  Future<List<Medicao>> medicao() async {
-    final db = await database;
-
-    final List<Map<String, dynamic>> maps = await db.query('medicao');
-
-    return List.generate(maps.length, (i) {
-      return Medicao(
-        horario: maps[i]['horario'],
-        id_paciente: maps[i]['id_paciente'],
-        peso: maps[i]['peso'],
-        stress: maps[i]['stress'],
-        desanimo: maps[i]['desanimo'],
-        atv_fisica: maps[i]['atv_fisica'],
-      );
-    });
-  }
-
-  Future<List<Atende>> atende() async {
-    final db = await database;
-
-    final List<Map<String, dynamic>> maps = await db.query('atende');
-
-    return List.generate(maps.length, (i) {
-      return Atende(
-        id_profissional: maps[i]['id_profissional'],
-        id_paciente: maps[i]['id_paciente'],
-      );
-    });
-  }
-
-  Future<void> updateUsuario(Usuario usuario) async {
-    final db = await database;
-    await db.update(
-      'usuario',
-      usuario.toMap(),
-      where: 'id = ?',
-      whereArgs: [usuario.id],
-    );
-  }
-
-  Future<void> updateMedicao(Medicao medicao) async {
-    final db = await database;
-    await db.update(
-      'medicao',
-      medicao.toMap(),
-      where: '(horario,id_paciente) = ?',
-      whereArgs: [medicao.horario, medicao.id_paciente],
-    );
-  }
-
-  Future<void> deleteUsuario(int id) async {
-    final db = await database;
-
-    await db.delete(
-      'usuario',
-      where: 'id = ?',
-      whereArgs: [id],
-    );
-  }
-
-  Future<void> deleteMedicao(DateTime horario, int id_paciente) async {
-    final db = await database;
-
-    await db.delete(
-      'medicao',
-      where: '(horario,id_paciente) = ?',
-      whereArgs: [horario, id_paciente],
-    );
-  }
-
-  Future<void> deleteAtende(int id_profissional, int id_paciente) async {
-    final db = await database;
-
-    await db.delete(
-      'atende',
-      where: '(id_profissional,id_paciente) = ?',
-      whereArgs: [id_profissional, id_paciente],
-    );
-  }
 
   var paulo = Usuario(
     id: PAULO_KEY,
@@ -187,7 +59,7 @@ void main() async {
   );
 
 
-  Database db = await database;
+  Database db = await getDatabase();
   await db.execute("DROP TABLE IF EXISTS Usuario;");
   await db.execute("DROP TABLE IF EXISTS Medicao;");
   await db.execute("DROP TABLE IF EXISTS Atende;");
@@ -311,4 +183,134 @@ class Atende {
   String toString() {
     return 'Atende{id_profissional: $id_profissional, id_paciente: $id_paciente}';
   }
+}
+
+Future<void> insertUsuario(Usuario usuario) async {
+  final db = await getDatabase();
+
+  await db.insert(
+    'usuario',
+    usuario.toMap(),
+    conflictAlgorithm: ConflictAlgorithm.replace,
+  );
+}
+
+Future<void> insertMedicao(Medicao medicao) async {
+  final db = await getDatabase();
+
+  await db.insert(
+    'medicao',
+    medicao.toMap(),
+    conflictAlgorithm: ConflictAlgorithm.replace,
+  );
+}
+
+Future<void> insertAtende(Atende atende) async {
+  final db = await getDatabase();
+  await db.insert(
+    'atende',
+    atende.toMap(),
+    conflictAlgorithm: ConflictAlgorithm.replace,
+  );
+}
+
+Future<List<Usuario>> usuario() async {
+  final db = await getDatabase();
+
+  final List<Map<String, dynamic>> maps = await db.query('usuario');
+
+  return List.generate(maps.length, (i) {
+    return Usuario(
+      id: maps[i]['id'],
+      nome: maps[i]['nome'],
+      email: maps[i]['email'],
+      senha: maps[i]['senha'],
+      idade: maps[i]['idade'],
+      documento: maps[i]['documento'],
+      dataNascimento: maps[i]['dataNascimento'],
+      altura: maps[i]['altura'],
+      crm: maps[i]['crm'],
+      tipoUsuario: maps[i]['tipoUsuario'],
+    );
+  });
+}
+
+Future<List<Medicao>> medicao() async {
+  final db = await getDatabase();
+
+  final List<Map<String, dynamic>> maps = await db.query('medicao');
+
+  return List.generate(maps.length, (i) {
+    return Medicao(
+      horario: maps[i]['horario'],
+      id_paciente: maps[i]['id_paciente'],
+      peso: maps[i]['peso'],
+      stress: maps[i]['stress'],
+      desanimo: maps[i]['desanimo'],
+      atv_fisica: maps[i]['atv_fisica'],
+    );
+  });
+}
+
+Future<List<Atende>> atende() async {
+  final db = await getDatabase();
+
+  final List<Map<String, dynamic>> maps = await db.query('atende');
+
+  return List.generate(maps.length, (i) {
+    return Atende(
+      id_profissional: maps[i]['id_profissional'],
+      id_paciente: maps[i]['id_paciente'],
+    );
+  });
+}
+
+Future<void> updateUsuario(Usuario usuario) async {
+  final db = await getDatabase();
+  await db.update(
+    'usuario',
+    usuario.toMap(),
+    where: 'id = ?',
+    whereArgs: [usuario.id],
+  );
+}
+
+Future<void> updateMedicao(Medicao medicao) async {
+  final db = await getDatabase();
+  await db.update(
+    'medicao',
+    medicao.toMap(),
+    where: '(horario,id_paciente) = ?',
+    whereArgs: [medicao.horario, medicao.id_paciente],
+  );
+}
+
+Future<void> deleteUsuario(int id) async {
+  final db = await getDatabase();
+
+  await db.delete(
+    'usuario',
+    where: 'id = ?',
+    whereArgs: [id],
+  );
+}
+
+Future<void> deleteMedicao(DateTime horario, int id_paciente) async {
+  final db = await getDatabase();
+
+  await db.delete(
+    'medicao',
+    where: '(horario,id_paciente) = ?',
+    whereArgs: [horario, id_paciente],
+  );
+}
+
+Future<void> deleteAtende(int id_profissional, int id_paciente) async {
+  final db = await getDatabase();
+
+  await db.delete(
+    'atende',
+    where: '(id_profissional,id_paciente) = ?',
+    whereArgs: [id_profissional, id_paciente],
+  );
 }
