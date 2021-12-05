@@ -321,7 +321,7 @@ class _MedidasState extends State<Medidas> {
                         onPressed: () async {
                           DateTime now = DateTime.now();
                           String formattedDate =
-                              DateFormat('yyyy-MM-dd – kk:mm').format(now);
+                              DateFormat('yyyy-MM-dd kk:mm').format(now);
                           var medida = Medicao(
                             horario: formattedDate,
                             id_paciente: 1,
@@ -331,7 +331,8 @@ class _MedidasState extends State<Medidas> {
                             desanimo: this.dict[this.depression_option]!,
                             atv_fisica: this.dictfis[this.ativ_fis]!,
                           );
-                          insertMedicao(medida);
+                          await insertMedicao(medida);
+                          //print((await medicao())[12]);
                         },
                         style: ElevatedButton.styleFrom(
                             primary: Colors.green[800]),
