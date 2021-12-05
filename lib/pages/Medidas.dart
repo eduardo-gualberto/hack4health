@@ -14,22 +14,6 @@ class _MedidasState extends State<Medidas> {
   List<SensorValue> data = [];
   int bpmValue = 0;
   bool enableBPM = false;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Medidas',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 1: Home',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 2: Chat',
-      style: optionStyle,
-    ),
-  ];
 
   double freq_c_progress = 0;
   bool btn_disable = false;
@@ -46,7 +30,7 @@ class _MedidasState extends State<Medidas> {
     return acc_bpm.toInt();
   }
 
-  void onAferirFreqCardiaca() {
+  void onAferirFreqCardiaca(BuildContext ctx) {
     setState(() {
       enableBPM = !enableBPM;
     });
@@ -55,6 +39,7 @@ class _MedidasState extends State<Medidas> {
         if (this.freq_c_progress >= 1) {
           enableBPM = !enableBPM;
           btn_disable = true;
+          Navigator.pop(ctx);
           timer.cancel();
         }
         this.freq_c_progress += 1 / 10;
@@ -74,17 +59,6 @@ class _MedidasState extends State<Medidas> {
     final ButtonStyle style =
         TextButton.styleFrom(primary: Theme.of(context).colorScheme.onPrimary);
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Medidas'),
-        backgroundColor: Colors.green[800],
-        actions: <Widget>[
-          TextButton(
-            style: style,
-            onPressed: () {},
-            child: const Text('Score'),
-          )
-        ],
-      ),
       body: Column(
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,23 +70,23 @@ class _MedidasState extends State<Medidas> {
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
           ),
-          enableBPM
-              ? Center(
-                  child: HeartBPMDialog(
-                    sampleDelay: 1000 ~/ 30,
-                    context: context,
-                    onRawData: (value) {
-                      setState(() {
-                        if (data.length == 100) data.removeAt(0);
-                        data.add(value);
-                      });
-                    },
-                    onBPM: (value) => setState(() {
-                      bpmValue = getMeanBPM();
-                    }),
-                  ),
-                )
-              : SizedBox(),
+          // enableBPM
+          //     ? Center(
+          //         child: HeartBPMDialog(
+          //           sampleDelay: 1000 ~/ 30,
+          //           context: context,
+          //           onRawData: (value) {
+          //             setState(() {
+          //               if (data.length == 100) data.removeAt(0);
+          //               data.add(value);
+          //             });
+          //           },
+          //           onBPM: (value) => setState(() {
+          //             bpmValue = getMeanBPM();
+          //           }),
+          //         ),
+          //       )
+          //     : SizedBox(),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
@@ -127,7 +101,33 @@ class _MedidasState extends State<Medidas> {
                       child: FloatingActionButton(
                         backgroundColor:
                             btn_disable ? Colors.green[800] : Colors.red,
-                        onPressed: btn_disable ? null : onAferirFreqCardiaca,
+                        onPressed: btn_disable
+                            ? null
+                            : () async {
+                                onAferirFreqCardiaca(context);
+                                BuildContext ctx = context;
+                                await showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      ctx = context;
+                                      return Center(
+                                        child: HeartBPMDialog(
+                                          sampleDelay: 1000 ~/ 30,
+                                          context: ctx,
+                                          onRawData: (value) {
+                                            setState(() {
+                                              if (data.length == 100)
+                                                data.removeAt(0);
+                                              data.add(value);
+                                            });
+                                          },
+                                          onBPM: (value) => setState(() {
+                                            bpmValue = getMeanBPM();
+                                          }),
+                                        ),
+                                      );
+                                    });
+                              },
                         child: Icon(
                           Icons.favorite,
                           size: 50,
@@ -156,7 +156,9 @@ class _MedidasState extends State<Medidas> {
                   value: freq_c_progress,
                 ))
               : Container(),
-          Container(height: 40,),
+          Container(
+            height: 40,
+          ),
           Padding(
             padding: const EdgeInsets.all(12.0),
             child: Text(
@@ -164,66 +166,68 @@ class _MedidasState extends State<Medidas> {
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Column(
-                    children: [
-                      Align(
-                        child: Text("Peso"),
-                        alignment: Alignment.centerLeft,
-                      ),
-                      TextField(
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: "Ex.: 82,5 (kg)",
+          SizedBox(
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Column(
+                      children: [
+                        Align(
+                          child: Text("Peso"),
+                          alignment: Alignment.centerLeft,
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Text("Nível de Estresse"),
-                      DropdownButton(
-                        value: stress_option,
-                        icon: const Icon(Icons.arrow_downward),
-                        elevation: 16,
-                        underline: Container(
-                          height: 2,
-                          color: Colors.green[800],
+                        TextField(
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: "Ex.: 82,5 (kg)",
+                          ),
                         ),
-                        onChanged: (String? newValue) {
-                          FocusScope.of(context).requestFocus(FocusNode());
-                          setState(() {
-                            stress_option = newValue!;
-                          });
-                        },
-                        onTap: () {
-                          FocusManager.instance.primaryFocus!.unfocus();
-                        },
-                        items: <String>[
-                          'Baixo',
-                          'Moderado',
-                          'Alto',
-                          'Muito Alto'
-                        ].map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                  Expanded(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Text("Nível de Estresse"),
+                        DropdownButton(
+                          value: stress_option,
+                          icon: const Icon(Icons.arrow_downward),
+                          elevation: 16,
+                          underline: Container(
+                            height: 2,
+                            color: Colors.green[800],
+                          ),
+                          onChanged: (String? newValue) {
+                            FocusScope.of(context).requestFocus(FocusNode());
+                            setState(() {
+                              stress_option = newValue!;
+                            });
+                          },
+                          onTap: () {
+                            FocusManager.instance.primaryFocus!.unfocus();
+                          },
+                          items: <String>[
+                            'Baixo',
+                            'Moderado',
+                            'Alto',
+                            'Muito Alto'
+                          ].map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           Padding(
@@ -317,6 +321,7 @@ class _MedidasState extends State<Medidas> {
                       height: 50,
                       child: ElevatedButton(
                           onPressed: () {},
+                          style: ElevatedButton.styleFrom(primary: Colors.green[800]),
                           child: Text(
                             "Enviar",
                             style: TextStyle(fontSize: 17),
@@ -325,28 +330,6 @@ class _MedidasState extends State<Medidas> {
           )
         ],
       ), // This trailing comma makes auto-formatting nicer for build methods.
-      /*body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
-      ),*/
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.addchart),
-            label: 'Medidas',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.chat),
-            label: 'Chat',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.green[800],
-        onTap: _onItemTapped,
-      ),
     );
   }
 }

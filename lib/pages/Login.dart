@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hack4health/pages/Medidas.dart';
+import 'package:hack4health/pages/Tela.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -26,44 +26,6 @@ class _LoginPageState extends State<LoginPage>
 
   @override
   Widget build(BuildContext context) {
-    final nomeTxt = TextField(
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0)),
-        hintText: 'Digite seu nome'
-      ),
-    );
-
-    final senhaTxt = TextField(
-      obscureText: true,
-      enableSuggestions: false,
-      autocorrect: false,
-      decoration: InputDecoration(
-        fillColor: Colors.green[800],
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0)),
-          //borderColor: Colors.white,
-        hintText: 'Digite seu senha'
-      ),
-    );
-
-    final botaoLogin = TextButton(
-      style: TextButton.styleFrom(
-        backgroundColor: Colors.green[800],
-      ),
-      child: Text(
-        'Entrar',
-        style: TextStyle(
-          color: Colors.white,
-        ),
-      ),
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => Medidas()),
-        );
-      },
-    );
 
     return Scaffold(
       appBar: AppBar(
@@ -76,7 +38,21 @@ class _LoginPageState extends State<LoginPage>
             padding: const EdgeInsets.all(40.0),
             child: Column(
               children: <Widget>[
-                nomeTxt,
+                Container(
+                  height: 120,
+                ),
+                TextField(
+                  cursorColor: Colors.green[800],
+                  decoration: InputDecoration(
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.green, width: 2.0),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey, width: 2.0),
+                    ),
+                  hintText: 'Digite seu nome'
+                  ),
+                ),
                 Container(
                   height: 30,
                 ),
@@ -84,31 +60,35 @@ class _LoginPageState extends State<LoginPage>
                   obscureText: true,
                   enableSuggestions: false,
                   autocorrect: false,
+                  cursorColor: Colors.green[800],
                   decoration: InputDecoration(
-                    fillColor: Colors.green[800],
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0)),
-                      //borderColor: Colors.white,
-                    hintText: 'Digite seu senha'
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.green, width: 2.0),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey, width: 2.0),
+                      ),
+                    hintText: 'Digite sua senha'
                   ),
                 ),
                 Container(
-                  height: 50,
+                  height: 100,
                 ),
-                TextButton(
-                  style: TextButton.styleFrom(
-                    backgroundColor: Colors.green[800],
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.green[800],
+                    onSurface: Colors.green,
+                    elevation: 5,
+                    shadowColor: Colors.green[800],
                   ),
                   child: Text(
                     'Entrar',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
+                    style: TextStyle(fontSize: 20),
                   ),
                   onPressed: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => Medidas()),
+                      MaterialPageRoute(builder: (context) => Tela()),
                     );
                   },
                 ),
