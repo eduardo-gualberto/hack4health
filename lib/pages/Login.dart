@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hack4health/computasus_db.dart';
+import 'package:hack4health/computasus_db.dart' as a;
+import 'package:hack4health/main.dart';
 import 'package:hack4health/pages/Tela.dart';
 
 class LoginPage extends StatefulWidget {
@@ -23,6 +24,7 @@ class _LoginPageState extends State<LoginPage>
   void initState() {
     super.initState();
     _controller = AnimationController(vsync: this);
+    a.main();
   }
 
   @override
@@ -83,7 +85,7 @@ class _LoginPageState extends State<LoginPage>
                   },
                 ),
                 Container(
-                  height: 100,
+                  height: 50,
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -97,7 +99,7 @@ class _LoginPageState extends State<LoginPage>
                     style: TextStyle(fontSize: 20),
                   ),
                   onPressed: () async {
-                    List<Usuario> users = await usuario();
+                    List<a.Usuario> users = await a.usuario();
                     for (var u in users) {
                       if (u.nome == user && u.senha == password) {
                         Navigator.pushReplacement(
