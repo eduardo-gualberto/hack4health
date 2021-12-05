@@ -29,7 +29,7 @@ class _TelaState extends State<Tela> {
     {
       _widgetOptions = <Widget>[
           Medidas(),
-          Home(),
+          Home(id: widget.user.id),
           Chat(),
       ];
     }

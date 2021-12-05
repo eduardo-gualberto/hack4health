@@ -46,8 +46,8 @@ class _LoginPageState extends State<LoginPage>
             padding: const EdgeInsets.all(40.0),
             child: Column(
               children: <Widget>[
-                Container(
-                  height: 120,
+                Text(
+                  "Coloque suas credenciais"
                 ),
                 TextField(
                   cursorColor: Colors.green[800],
