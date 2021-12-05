@@ -4,8 +4,8 @@ import 'package:hack4health/pages/Home.dart';
 import 'package:hack4health/pages/Chat.dart';
 
 class Tela extends StatefulWidget {
-  const Tela({Key? key}) : super(key: key);
-
+  const Tela({Key? key, required this.user_type}) : super(key: key);
+  final int user_type;
   @override
   State<Tela> createState() => _TelaState();
 }

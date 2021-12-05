@@ -102,7 +102,7 @@ class _LoginPageState extends State<LoginPage>
                       if (u.nome == user && u.senha == password) {
                         Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(builder: (context) => Tela()),
+                          MaterialPageRoute(builder: (context) => Tela(user_type: u.tipoUsuario,)),
                         );
                       }
                     }
