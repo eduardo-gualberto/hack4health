@@ -176,7 +176,7 @@ void main() async {
 
   await db.execute(
       'CREATE TABLE Usuario(id INTEGER PRIMARY KEY, nome TEXT NOT NULL, email TEXT NOT NULL, senha TEXT NOT NULL, idade INTEGER NOT NULL, documento TEXT NOT NULL,' +
-          'data_nascimento DATE NOT NULL, altura INTEGER, crm INTEGER, tipo_usuario BIT NOT NULL);');
+          'data_nascimento TEXT NOT NULL, altura INTEGER, crm INTEGER, tipo_usuario BIT NOT NULL);');
   await db.execute(
       'CREATE TABLE Medicao(horario TEXT, id_paciente INTEGER, peso FLOAT, freq INTEGER, stress INTEGER, desanimo INTEGER, atv_fisica INTEGER,' +
           'CONSTRAINT pk_medicao primary key(horario,id_paciente),' +

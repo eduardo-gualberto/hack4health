@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:heart_bpm/heart_bpm.dart';
 import 'dart:async';
 import '../computasus_db.dart';
+import 'package:intl/intl.dart';
 
 class Medidas extends StatefulWidget {
   const Medidas({Key? key}) : super(key: key);
@@ -177,7 +178,7 @@ class _MedidasState extends State<Medidas> {
                             border: OutlineInputBorder(),
                             hintText: "Ex.: 82,5 (kg)",
                           ),
-                          onChanged: (value){
+                          onChanged: (value) {
                             peso = value;
                             print(peso);
                           },
@@ -316,12 +317,28 @@ class _MedidasState extends State<Medidas> {
                       width: 120,
                       height: 50,
                       child: ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(primary: Colors.green[800]),
-                          child: Text(
-                            "Enviar",
-                            style: TextStyle(fontSize: 17),
-                          )))),
+                        onPressed: () async {
+                          DateTime now = DateTime.now();
+                          String formattedDate =
+                              DateFormat('yyyy-MM-dd – kk:mm').format(now);
+                          var medida = Medicao(
+                            horario: formattedDate,
+                            id_paciente: 1,
+                            freq: this.bpmValue,
+                            peso: double.parse(this.peso),
+                            stress: int.parse(this.stress_option),
+                            desanimo: int.parse(this.depression_option),
+                            atv_fisica: int.parse(this.ativ_fis),
+                          );
+                          insertMedicao(medida);
+                        },
+                        style: ElevatedButton.styleFrom(
+                            primary: Colors.green[800]),
+                        child: Text(
+                          "Enviar",
+                          style: TextStyle(fontSize: 17),
+                        ),
+                      ))),
             ),
           )
         ],
