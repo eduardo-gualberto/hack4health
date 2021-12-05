@@ -14,15 +14,18 @@ void main() async {
   final database = openDatabase(
     join(await getDatabasesPath(), 'computasus.db'),
     onCreate: (db, version) async {
-      await db.execute('CREATE TABLE Usuario(id INTEGER PRIMARY KEY, nome TEXT NOT NULL, email TEXT NOT NULL, senha TEXT NOT NULL, idade INTEGER NOT NULL, documento TEXT NOT NULL,' +
-          'data_nascimento TEXT NOT NULL, altura INTEGER, crm INTEGER, tipo_usuario BIT NOT NULL);');
-      await db.execute('CREATE TABLE Medicao(horario TEXT, id_paciente INTEGER, peso FLOAT, stress INTEGER, desanimo INTEGER, atv_fisca INTEGER,' +
-          'CONSTRAINT pk_medicao primary key(horario,id_paciente),' +
-          'CONSTRAINT fk_paciente FOREIGN KEY(id_paciente) REFERENCES Usuario(id));');
-      await db.execute('CREATE TABLE Atende(id_profissional INTEGER, id_paciente INTEGER,'+
-          'CONSTRAINT pk_atende PRIMARY KEY(id_profissional,id_paciente),'+
-          'CONSTRAINT fk_profissional FOREIGN KEY(id_profissional) REFERENCES Usuario(id),' +
-          'CONSTRAINT fk_paciente FOREIGN KEY(id_paciente) REFERENCES Usuario(id));');
+      await db.execute(
+          'CREATE TABLE Usuario(id INTEGER PRIMARY KEY, nome TEXT NOT NULL, email TEXT NOT NULL, senha TEXT NOT NULL, idade INTEGER NOT NULL, documento TEXT NOT NULL,' +
+              'data_nascimento TEXT NOT NULL, altura INTEGER, crm INTEGER, tipo_usuario BIT NOT NULL);');
+      await db.execute(
+          'CREATE TABLE Medicao(horario DATETIME, id_paciente INTEGER, peso FLOAT, stress INTEGER, desanimo INTEGER, atv_fisca INTEGER,' +
+              'CONSTRAINT pk_medicao primary key(horario,id_paciente),' +
+              'CONSTRAINT fk_paciente FOREIGN KEY(id_paciente) REFERENCES Usuario(id));');
+      await db.execute(
+          'CREATE TABLE Atende(id_profissional INTEGER, id_paciente INTEGER,' +
+              'CONSTRAINT pk_atende PRIMARY KEY(id_profissional,id_paciente),' +
+              'CONSTRAINT fk_profissional FOREIGN KEY(id_profissional) REFERENCES Usuario(id),' +
+              'CONSTRAINT fk_paciente FOREIGN KEY(id_paciente) REFERENCES Usuario(id));');
     },
     version: 1,
   );
@@ -86,6 +89,7 @@ void main() async {
       return Medicao(
         horario: maps[i]['horario'],
         id_paciente: maps[i]['id_paciente'],
+        freq: maps[i]['freq'],
         peso: maps[i]['peso'],
         stress: maps[i]['stress'],
         desanimo: maps[i]['desanimo'],
@@ -186,29 +190,150 @@ void main() async {
     id_profissional: ALBERTO_KEY,
   );
 
+  var medida1 = Medicao(
+      horario: "2021-11-23 09:13:02",
+      id_paciente: 1,
+      freq: 67,
+      peso: 65.3,
+      stress: 2,
+      desanimo: 1,
+      atv_fisica: 1);
+
+  var medida2 = Medicao(
+      horario: "2021-11-24 09:45:02Z",
+      id_paciente: 1,
+      freq: 70,
+      peso: 65.3,
+      stress: 3,
+      desanimo: 1,
+      atv_fisica: 0);
+
+  var medida3 = Medicao(
+      horario: "2021-11-25 12:15:04",
+      id_paciente: 1,
+      freq: 60,
+      peso: 65.0,
+      stress: 1,
+      desanimo: 0,
+      atv_fisica: 1);
+
+  var medida4 = Medicao(
+      horario: "2021-12-26 09:25:02",
+      id_paciente: 1,
+      freq: 75,
+      peso: 65,
+      stress: 3,
+      desanimo: 3,
+      atv_fisica: 0);
+
+  var medida5 = Medicao(
+      horario: "2021-11-27 09:19:03",
+      id_paciente: 1,
+      freq: 67,
+      peso: 65.6,
+      stress: 2,
+      desanimo: 2,
+      atv_fisica: 1);
+
+  var medida6 = Medicao(
+      horario: "2021-11-28 14:15:02",
+      id_paciente: 1,
+      freq: 76,
+      peso: 65.5,
+      stress: 3,
+      desanimo: 1,
+      atv_fisica: 1);
+
+  var medida7 = Medicao(
+      horario: "2021-11-29 12:12:02",
+      id_paciente: 1,
+      freq: 64,
+      peso: 65.2,
+      stress: 0,
+      desanimo: 0,
+      atv_fisica: 1);
+
+  var medida8 = Medicao(
+      horario: "2021-11-30 17:14:02",
+      id_paciente: 1,
+      freq: 85,
+      peso: 64.9,
+      stress: 3,
+      desanimo: 3,
+      atv_fisica: 0);
+
+  var medida9 = Medicao(
+      horario: "2021-12-01 09:13:02Z",
+      id_paciente: 1,
+      freq: 72,
+      peso: 64.9,
+      stress: 2,
+      desanimo: 2,
+      atv_fisica: 1);
+
+  var medida10 = Medicao(
+      horario: "2021-12-02 11:13:02Z",
+      id_paciente: 1,
+      freq: 69,
+      peso: 65.2,
+      stress: 1,
+      desanimo: 0,
+      atv_fisica: 1);
+
+  var medida11 = Medicao(
+      horario: "2021-12-03 10:15:32Z",
+      id_paciente: 1,
+      freq: 87,
+      peso: 65.1,
+      stress: 2,
+      desanimo: 0,
+      atv_fisica: 1);
+
+  var medida12 = Medicao(
+      horario: "2021-12-04 11:12:23Z",
+      id_paciente: 1,
+      freq: 65,
+      peso: 65.3,
+      stress: 1,
+      desanimo: 1,
+      atv_fisica: 0);
 
   Database db = await database;
   await db.execute("DROP TABLE IF EXISTS Usuario;");
   await db.execute("DROP TABLE IF EXISTS Medicao;");
   await db.execute("DROP TABLE IF EXISTS Atende;");
 
-  await db.execute('CREATE TABLE Usuario(id INTEGER PRIMARY KEY, nome TEXT NOT NULL, email TEXT NOT NULL, senha TEXT NOT NULL, idade INTEGER NOT NULL, documento TEXT NOT NULL,' +
-      'data_nascimento DATE NOT NULL, altura INTEGER, crm INTEGER, tipo_usuario BIT NOT NULL);');
-  await db.execute('CREATE TABLE Medicao(horario TEXT, id_paciente INTEGER, peso FLOAT, stress INTEGER, desanimo INTEGER, atv_fisca INTEGER,' +
-      'CONSTRAINT pk_medicao primary key(horario,id_paciente),' +
-      'CONSTRAINT fk_paciente FOREIGN KEY(id_paciente) REFERENCES Usuario(id));');
-  await db.execute('CREATE TABLE Atende(id_profissional INTEGER, id_paciente INTEGER,'+
-      'CONSTRAINT pk_atende PRIMARY KEY(id_profissional,id_paciente),'+
+  await db.execute(
+      'CREATE TABLE Usuario(id INTEGER PRIMARY KEY, nome TEXT NOT NULL, email TEXT NOT NULL, senha TEXT NOT NULL, idade INTEGER NOT NULL, documento TEXT NOT NULL,' +
+          'data_nascimento DATE NOT NULL, altura INTEGER, crm INTEGER, tipo_usuario BIT NOT NULL);');
+  await db.execute(
+      'CREATE TABLE Medicao(horario TEXT, id_paciente INTEGER, peso FLOAT, freq INTEGER, stress INTEGER, desanimo INTEGER, atv_fisica INTEGER,' +
+          'CONSTRAINT pk_medicao primary key(horario,id_paciente),' +
+          'CONSTRAINT fk_paciente FOREIGN KEY(id_paciente) REFERENCES Usuario(id));');
+  await db.execute('CREATE TABLE Atende(id_profissional INTEGER, id_paciente INTEGER,' +
+      'CONSTRAINT pk_atende PRIMARY KEY(id_profissional,id_paciente),' +
       'CONSTRAINT fk_profissional FOREIGN KEY(id_profissional) REFERENCES Usuario(id),' +
       'CONSTRAINT fk_paciente FOREIGN KEY(id_paciente) REFERENCES Usuario(id));');
-
 
   await insertUsuario(paulo);
   await insertUsuario(alberto);
   await insertAtende(atendimento);
+  await insertMedicao(medida1);
+  await insertMedicao(medida2);
+  await insertMedicao(medida3);
+  await insertMedicao(medida4);
+  await insertMedicao(medida5);
+  await insertMedicao(medida6);
+  await insertMedicao(medida7);
+  await insertMedicao(medida8);
+  await insertMedicao(medida9);
+  await insertMedicao(medida10);
+  await insertMedicao(medida11);
+  await insertMedicao(medida12);
 
   print(await usuario());
   print(await atende());
+  print(await medicao());
 }
 
 class Usuario {
@@ -257,8 +382,9 @@ class Usuario {
 }
 
 class Medicao {
-  final DateTime horario;
+  final String horario;
   final int id_paciente;
+  final int freq;
   final double peso;
   final int stress;
   final int desanimo;
@@ -267,6 +393,7 @@ class Medicao {
   Medicao({
     required this.horario,
     required this.id_paciente,
+    required this.freq,
     required this.peso,
     required this.stress,
     required this.desanimo,
@@ -277,6 +404,7 @@ class Medicao {
     return {
       'horario': horario,
       'id_paciente': id_paciente,
+      'freq': freq,
       'peso': peso,
       'stress': stress,
       'desanimo': desanimo,
@@ -286,7 +414,7 @@ class Medicao {
 
   @override
   String toString() {
-    return 'Medicao{horario: $horario, id_paciente: $id_paciente, peso: $peso, stress: $stress, desanimo: $desanimo, ' +
+    return 'Medicao{horario: $horario, id_paciente: $id_paciente,freq:$freq, peso: $peso, stress: $stress, desanimo: $desanimo, ' +
         'atv_fisica: $atv_fisica}';
   }
 }
