@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:hack4health/computasus_db.dart';
 import 'package:hack4health/pages/Medidas.dart';
 import 'package:hack4health/pages/Home.dart';
 import 'package:hack4health/pages/Chat.dart';
 
 class Tela extends StatefulWidget {
-  const Tela({Key? key, required this.user_type}) : super(key: key);
-  final int user_type;
+  const Tela({Key? key, required this.user}) : super(key: key);
+  final Usuario user;
   @override
   State<Tela> createState() => _TelaState();
 }
