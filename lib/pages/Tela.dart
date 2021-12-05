@@ -3,6 +3,7 @@ import 'package:hack4health/computasus_db.dart';
 import 'package:hack4health/pages/Medidas.dart';
 import 'package:hack4health/pages/Home.dart';
 import 'package:hack4health/pages/Chat.dart';
+import 'package:hack4health/pages/Pacientes.dart';
 
 class Tela extends StatefulWidget {
   const Tela({Key? key, required this.user}) : super(key: key);
@@ -14,12 +15,6 @@ class Tela extends StatefulWidget {
 class _TelaState extends State<Tela> {
   int _selectedIndex = 0;
 
-  static List<Widget> _widgetOptions = <Widget>[
-    Medidas(),
-    Home(),
-    Chat(),
-  ];
-
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -29,10 +24,27 @@ class _TelaState extends State<Tela> {
   @override
   @override
   Widget build(BuildContext context) {
+    List<Widget> _widgetOptions;
+    if (widget.user.tipoUsuario == 0)
+    {
+      _widgetOptions = <Widget>[
+          Medidas(),
+          Home(),
+          Chat(),
+      ];
+    }
+    else 
+    { 
+      _widgetOptions = <Widget>[
+        Pacientes(),
+        Chat(),
+      ];
+    }
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Bem vindo, Paulo!'),
+      appBar: 
+      widget.user.tipoUsuario == 0 ? AppBar(
+        title: Text('Bem vindo, ' + widget.user.nome),
         backgroundColor: Colors.green[800],
         actions: <Widget>[
           IconButton(
@@ -44,11 +56,15 @@ class _TelaState extends State<Tela> {
             onPressed: () {},
           )
         ],
+      ) : AppBar(
+        title: Text('Bem vindo, ' + widget.user.nome),
+        backgroundColor: Colors.blue[800],
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
-      bottomNavigationBar: BottomNavigationBar(
+      bottomNavigationBar: 
+      widget.user.tipoUsuario == 0 ? BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.addchart),
@@ -66,7 +82,21 @@ class _TelaState extends State<Tela> {
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.green[800],
         onTap: _onItemTapped,
-      ),
+      ) : BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.people),
+              label: 'Pacientes',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.chat),
+              label: 'Chat',
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.blue[800],
+          onTap: _onItemTapped,
+        )
     );
   }
 }

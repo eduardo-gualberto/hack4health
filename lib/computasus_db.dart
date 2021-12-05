@@ -9,7 +9,7 @@ Future<Database> getDatabase() async{
       join(await getDatabasesPath(), 'computasus.db'),
       onCreate: (db, version) async {
   await db.execute('CREATE TABLE Usuario(id INTEGER PRIMARY KEY, nome TEXT NOT NULL, email TEXT NOT NULL, senha TEXT NOT NULL, idade INTEGER NOT NULL, documento TEXT NOT NULL,' +
-  'data_nascimento TEXT NOT NULL, altura INTEGER, crm INTEGER, tipo_usuario BIT NOT NULL);');
+  'data_nascimento TEXT NOT NULL, altura INTEGER, crm INTEGER, tipoUsuario INTEGER);');
   await db.execute('CREATE TABLE Medicao(horario TEXT, id_paciente INTEGER, peso FLOAT, stress INTEGER, desanimo INTEGER, atv_fisca INTEGER,' +
   'CONSTRAINT pk_medicao primary key(horario,id_paciente),' +
   'CONSTRAINT fk_paciente FOREIGN KEY(id_paciente) REFERENCES Usuario(id));');
@@ -65,7 +65,7 @@ void main() async {
   await db.execute("DROP TABLE IF EXISTS Atende;");
 
   await db.execute('CREATE TABLE Usuario(id INTEGER PRIMARY KEY, nome TEXT NOT NULL, email TEXT NOT NULL, senha TEXT NOT NULL, idade INTEGER NOT NULL, documento TEXT NOT NULL,' +
-      'data_nascimento DATE NOT NULL, altura INTEGER, crm INTEGER, tipo_usuario BIT NOT NULL);');
+      'data_nascimento TEXT NOT NULL, altura INTEGER, crm INTEGER, tipoUsuario INTEGER);');
   await db.execute('CREATE TABLE Medicao(horario TEXT, id_paciente INTEGER, peso FLOAT, stress INTEGER, desanimo INTEGER, atv_fisca INTEGER,' +
       'CONSTRAINT pk_medicao primary key(horario,id_paciente),' +
       'CONSTRAINT fk_paciente FOREIGN KEY(id_paciente) REFERENCES Usuario(id));');
@@ -117,14 +117,14 @@ class Usuario {
       'idade': idade,
       'documento': documento,
       'data_nascimento': dataNascimento,
-      'tipo_usuario': tipoUsuario,
+      'tipoUsuario': tipoUsuario,
     };
   }
 
   @override
   String toString() {
     return 'Usuario{id: $id, npme: $nome, age: $idade, email: $email, senha: $senha, documento: $documento, ' +
-        'data_nascimento: $dataNascimento, altura: $altura, crm: $crm, tipo_usuario: $tipoUsuario}';
+        'data_nascimento: $dataNascimento, altura: $altura, crm: $crm, tipoUsuario: $tipoUsuario}';
   }
 }
 
