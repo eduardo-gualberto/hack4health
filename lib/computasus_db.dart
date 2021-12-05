@@ -135,13 +135,8 @@ void main() async {
       atv_fisica: 0);
 
   var medida9 = Medicao(
-<<<<<<< HEAD
-      horario: "2021-12-01 09:13:02Z",
-      id_paciente: 1234,
-=======
       horario: "2021-12-01 09:13:02",
-      id_paciente: 1,
->>>>>>> 17f58890bf6d878b2ce677b56dacb3acc4c2c63f
+      id_paciente: 1234,
       freq: 72,
       peso: 64.9,
       stress: 2,
@@ -149,13 +144,8 @@ void main() async {
       atv_fisica: 1);
 
   var medida10 = Medicao(
-<<<<<<< HEAD
-      horario: "2021-12-02 11:13:02Z",
-      id_paciente: 1234,
-=======
       horario: "2021-12-02 11:13:02",
-      id_paciente: 1,
->>>>>>> 17f58890bf6d878b2ce677b56dacb3acc4c2c63f
+      id_paciente: 1234,
       freq: 69,
       peso: 65.2,
       stress: 1,
@@ -163,13 +153,8 @@ void main() async {
       atv_fisica: 1);
 
   var medida11 = Medicao(
-<<<<<<< HEAD
-      horario: "2021-12-03 10:15:32Z",
-      id_paciente: 1234,
-=======
       horario: "2021-12-03 10:15:32",
-      id_paciente: 1,
->>>>>>> 17f58890bf6d878b2ce677b56dacb3acc4c2c63f
+      id_paciente: 1234,
       freq: 87,
       peso: 65.1,
       stress: 2,
@@ -177,13 +162,8 @@ void main() async {
       atv_fisica: 1);
 
   var medida12 = Medicao(
-<<<<<<< HEAD
-      horario: "2021-12-04 11:12:23Z",
-      id_paciente: 1234,
-=======
       horario: "2021-12-04 11:12:23",
-      id_paciente: 1,
->>>>>>> 17f58890bf6d878b2ce677b56dacb3acc4c2c63f
+      id_paciente: 1234,
       freq: 65,
       peso: 65.3,
       stress: 1,
