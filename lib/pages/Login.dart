@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hack4health/pages/Tela.dart';
+import 'package:hack4health/pages/TelaCliente.dart';
+import 'package:hack4health/pages/TelaMedico.dart';
+import '../computasus_db.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -11,7 +13,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-
+  //final _formKey = GlobalKey<FormState>();
   @override
   void initState() {
     super.initState();
@@ -41,7 +43,7 @@ class _LoginPageState extends State<LoginPage>
                 Container(
                   height: 120,
                 ),
-                TextField(
+                /*TextFormField(
                   cursorColor: Colors.green[800],
                   decoration: InputDecoration(
                     focusedBorder: OutlineInputBorder(
@@ -56,7 +58,7 @@ class _LoginPageState extends State<LoginPage>
                 Container(
                   height: 30,
                 ),
-                TextField(
+                TextFormField(
                   obscureText: true,
                   enableSuggestions: false,
                   autocorrect: false,
@@ -73,7 +75,7 @@ class _LoginPageState extends State<LoginPage>
                 ),
                 Container(
                   height: 100,
-                ),
+                ),*/
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     primary: Colors.green[800],
@@ -82,13 +84,34 @@ class _LoginPageState extends State<LoginPage>
                     shadowColor: Colors.green[800],
                   ),
                   child: Text(
-                    'Entrar',
+                    'Entrar como Cliente',
                     style: TextStyle(fontSize: 20),
                   ),
                   onPressed: () {
-                    Navigator.pushReplacement(
+                    Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Tela()),
+                      MaterialPageRoute(builder: (context) => TelaCliente()),
+                    );
+                  },
+                ),
+                Container(
+                  height: 100,
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.blue[800],
+                    onSurface: Colors.blue,
+                    elevation: 5,
+                    shadowColor: Colors.blue[800],
+                  ),
+                  child: Text(
+                    'Entrar como Médico',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => TelaMedico()),
                     );
                   },
                 ),

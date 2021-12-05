@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:hack4health/pages/Medidas.dart';
-import 'package:hack4health/pages/Home.dart';
+import 'package:hack4health/pages/Pacientes.dart';
 import 'package:hack4health/pages/Chat.dart';
 
-class Tela extends StatefulWidget {
-  const Tela({Key? key}) : super(key: key);
+class TelaMedico extends StatefulWidget {
+  const TelaMedico({Key? key}) : super(key: key);
 
   @override
-  State<Tela> createState() => _TelaState();
+  State<TelaMedico> createState() => _TelaMedicoState();
 }
 
-class _TelaState extends State<Tela> {
+class _TelaMedicoState extends State<TelaMedico> {
   int _selectedIndex = 0;
 
   static List<Widget> _widgetOptions = <Widget>[
-    Medidas(),
-    Home(),
+    Pacientes(),
     Chat(),
   ];
 
@@ -31,18 +29,8 @@ class _TelaState extends State<Tela> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Bem vindo, Paulo!'),
-        backgroundColor: Colors.green[800],
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.star,
-              color: Colors.yellow,
-            ),
-            tooltip: 'Score',
-            onPressed: () {},
-          )
-        ],
+        title: const Text('Bem vindo, Dr. Alberto!'),
+        backgroundColor: Colors.blue[800],
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
@@ -50,12 +38,8 @@ class _TelaState extends State<Tela> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.addchart),
-            label: 'Medidas',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+            icon: Icon(Icons.people),
+            label: 'Pacientes',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.chat),
@@ -63,7 +47,7 @@ class _TelaState extends State<Tela> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.green[800],
+        selectedItemColor: Colors.blue[800],
         onTap: _onItemTapped,
       ),
     );
