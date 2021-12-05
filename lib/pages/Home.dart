@@ -44,8 +44,16 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {    
-    return Stack(
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Column(
       children: <Widget>[
+        Container(
+          height: 20,
+        ),
+        Text(
+          "Frequência cardíaca (bpm)"
+        ),
         AspectRatio(
           aspectRatio: 1.70,
           child: Container(
@@ -77,6 +85,8 @@ class _HomeState extends State<Home> {
           ),
         ),*/
       ],
+      ),
+    ),
     );
   }
 
@@ -134,12 +144,14 @@ class _HomeState extends State<Home> {
           ),
           getTitles: (value) {
             switch (value.toInt()) {
-              case 10:
-                return '10';
+              case 20:
+                return '20';
               case 60:
                 return '60';
               case 100:
                 return '100';
+              case 140:
+                return '140';
             }
             return '';
           },
@@ -153,7 +165,7 @@ class _HomeState extends State<Home> {
       minX: 0,
       maxX: s.length.toDouble()-1,
       minY: 0,
-      maxY: 100,
+      maxY: 150,
       lineBarsData: [
         LineChartBarData(
           spots: s,
