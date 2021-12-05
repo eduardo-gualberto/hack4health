@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:heart_bpm/heart_bpm.dart';
 import 'dart:async';
+import '../computasus_db.dart';
 
 class Medidas extends StatefulWidget {
   const Medidas({Key? key}) : super(key: key);
@@ -51,6 +52,13 @@ class _MedidasState extends State<Medidas> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    main();
+    super.initState();
   }
 
   @override

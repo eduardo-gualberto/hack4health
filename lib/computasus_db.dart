@@ -8,12 +8,15 @@ import 'package:sqflite/sqflite.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  int PAULO_KEY = 1234;
+  int ALBERTO_KEY = 5678;
+
   final database = openDatabase(
     join(await getDatabasesPath(), 'computasus.db'),
     onCreate: (db, version) {
       return db.execute(
           'CREATE TABLE Usuario(id INTEGER PRIMARY KEY, nome TEXT NOT NULL, email TEXT NOT NULL, senha TEXT NOT NULL, idade INTEGER NOT NULL, documento TEXT NOT NULL,' +
-              'data_nascimento DATE NOT NULL, altura INTEGER, crm INTEGER, tipo_usuario BIT NOT NULL) ');
+              'data_nascimento VARCHAR(20) NOT NULL, altura INTEGER, crm INTEGER, tipo_usuario BIT NOT NULL) ');
     },
     version: 1,
   );
@@ -77,7 +80,7 @@ class Usuario {
   final String senha;
   final int idade;
   final String documento;
-  final DateTime dataNascimento;
+  final String dataNascimento;
   int altura;
   String crm;
   final int tipoUsuario;
