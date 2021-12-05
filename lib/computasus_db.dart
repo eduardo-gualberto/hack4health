@@ -14,12 +14,14 @@ void main() async {
   final database = openDatabase(
     join(await getDatabasesPath(), 'computasus.db'),
     onCreate: (db, version) {
-      return db.execute(
-          'CREATE TABLE Usuario(id INTEGER PRIMARY KEY, nome TEXT NOT NULL, email TEXT NOT NULL, senha TEXT NOT NULL, idade INTEGER NOT NULL, documento TEXT NOT NULL,' +
-              'data_nascimento DATE NOT NULL, altura INTEGER, crm INTEGER, tipo_usuario BIT NOT NULL);\n ' +
-              'CREATE TABLE Medicao(horario DATETIME, id_paciente INTEGER, peso FLOAT, stress INTEGER, desanimo INTEGER, atv_fisca INTEGER)' +
-              '\nCONSTRAINT pk_medicao primary key(horario,id_paciente)\n' +
-              'CONSTRAINT fk_paciente FOREIGN KEY(id_paciente) REFERENCES Usuario(id)');
+      return db.execute('CREATE TABLE Usuario(id INTEGER PRIMARY KEY, nome TEXT NOT NULL, email TEXT NOT NULL, senha TEXT NOT NULL, idade INTEGER NOT NULL, documento TEXT NOT NULL,' +
+          'data_nascimento DATE NOT NULL, altura INTEGER, crm INTEGER, tipo_usuario BIT NOT NULL);\n ' +
+          'CREATE TABLE Medicao(horario DATETIME, id_paciente INTEGER, peso FLOAT, stress INTEGER, desanimo INTEGER, atv_fisca INTEGER)' +
+          '\nCONSTRAINT pk_medicao primary key(horario,id_paciente)\n' +
+          'CONSTRAINT fk_paciente FOREIGN KEY(id_paciente) REFERENCES Usuario(id);\n' +
+          'CREATE TABLE Atende(id_profissional, id_paciente)\n CONSTRAINT pk_atende PRIMARY KEY(id_profissional,id_paciente)\n' +
+          'CONSTRAINT fk_profissional FOREIGN KEY(id_profissional) REFERENCES Usuario(id)\n' +
+          'CONSTRAINT fk_paciente FOREIGN KEY(id_paciente) REFERENCES Usuario(id);');
     },
     version: 1,
   );
@@ -38,8 +40,18 @@ void main() async {
     final db = await database;
 
     await db.insert(
-      'usuario',
+      'medicao',
       medicao.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<void> insertAtende(Atende atende) async {
+    final db = await database;
+
+    await db.insert(
+      'atende',
+      atende.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
@@ -82,6 +94,19 @@ void main() async {
     });
   }
 
+  Future<List<Atende>> atende() async {
+    final db = await database;
+
+    final List<Map<String, dynamic>> maps = await db.query('atende');
+
+    return List.generate(maps.length, (i) {
+      return Atende(
+        id_profissional: maps[i]['id_profissional'],
+        id_paciente: maps[i]['id_paciente'],
+      );
+    });
+  }
+
   Future<void> updateUsuario(Usuario usuario) async {
     final db = await database;
     await db.update(
@@ -116,9 +141,19 @@ void main() async {
     final db = await database;
 
     await db.delete(
-      'Medicao',
+      'medicao',
       where: '(horario,id_paciente) = ?',
       whereArgs: [horario, id_paciente],
+    );
+  }
+
+  Future<void> deleteAtende(int id_profissional, int id_paciente) async {
+    final db = await database;
+
+    await db.delete(
+      'atende',
+      where: '(id_profissional,id_paciente) = ?',
+      whereArgs: [id_profissional, id_paciente],
     );
   }
 }
@@ -200,5 +235,27 @@ class Medicao {
   String toString() {
     return 'Medicao{horario: $horario, id_paciente: $id_paciente, peso: $peso, stress: $stress, desanimo: $desanimo, ' +
         'atv_fisica: $atv_fisica}';
+  }
+}
+
+class Atende {
+  final int id_profissional;
+  final int id_paciente;
+
+  Atende({
+    required this.id_profissional,
+    required this.id_paciente,
+  });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id_profissional': id_profissional,
+      'id_paciente': id_paciente,
+    };
+  }
+
+  @override
+  String toString() {
+    return 'Atende{id_profissional: $id_profissional, id_paciente: $id_paciente}';
   }
 }
