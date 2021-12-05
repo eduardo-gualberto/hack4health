@@ -78,8 +78,8 @@ class Usuario {
   final int idade;
   final String documento;
   final DateTime dataNascimento;
-  final int altura;
-  final String crm;
+  int altura;
+  String crm;
   final int tipoUsuario;
 
   Usuario({
@@ -91,8 +91,8 @@ class Usuario {
     required this.documento,
     required this.dataNascimento,
     required this.tipoUsuario,
-    required this.altura,
-    required this.crm,
+    this.altura = 0,
+    this.crm = "",
   });
 
   Map<String, dynamic> toMap() {
