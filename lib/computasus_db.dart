@@ -12,7 +12,7 @@ Future<Database> getDatabase() async {
           'CREATE TABLE Usuario(id INTEGER PRIMARY KEY, nome TEXT NOT NULL, email TEXT NOT NULL, senha TEXT NOT NULL, idade INTEGER NOT NULL, documento TEXT NOT NULL,' +
               'data_nascimento TEXT NOT NULL, altura INTEGER, crm INTEGER, tipoUsuario INTEGER);');
       await db.execute(
-          'CREATE TABLE Medicao(horario TEXT, id_paciente INTEGER, peso FLOAT, stress INTEGER, desanimo INTEGER, atv_fisca INTEGER,' +
+          'CREATE TABLE Medicao(horario TEXT, id_paciente INTEGER, peso FLOAT, stress INTEGER, desanimo INTEGER, atv_fisica INTEGER,' +
               'CONSTRAINT pk_medicao primary key(horario,id_paciente),' +
               'CONSTRAINT fk_paciente FOREIGN KEY(id_paciente) REFERENCES Usuario(id));');
       await db.execute(

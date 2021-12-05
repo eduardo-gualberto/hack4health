@@ -36,7 +36,7 @@ class _TelaState extends State<Tela> {
     else 
     { 
       _widgetOptions = <Widget>[
-        Pacientes(),
+        Pacientes(id: widget.user.id),
         Chat(),
       ];
     }
