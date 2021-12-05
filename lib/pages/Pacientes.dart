@@ -13,28 +13,82 @@ class Pacientes extends StatefulWidget {
 class _PacientesState extends State<Pacientes> {
   List<Usuario> pacientes = [];
 
-  @override
-  Widget build(BuildContext context) {
-    Future<List<Usuario>> getPacientes() async {
-      List<Atende> at = await atende();
-      at.removeWhere((element) => element.id_profissional != widget.id);
-      List<int> id_pacientes = at.map<int>((e) => e.id_paciente).toList();
-      List<Usuario> pacientes = await usuario();
-      pacientes.removeWhere((e) => !id_pacientes.contains(e.id));
-      return pacientes;
-    }
+  Future<List<Usuario>> getPacientes(int id) async {
+    List<Atende> at = await atende();
+    at.removeWhere((element) => element.id_profissional != id);
+    List<int> id_pacientes = at.map<int>((e) => e.id_paciente).toList();
+    List<Usuario> pacientes = await usuario();
+    pacientes.removeWhere((e) => !id_pacientes.contains(e.id));
+    return pacientes;
+  }
 
-    getPacientes().then((value){
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getPacientes(super.widget.id).then((value) {
       setState(() {
         pacientes = value;
       });
     });
+  }
+
+  @override
+  Widget build(BuildContext context) {
 
     return Scaffold(
       body: Center(
         child: Column(
-          children:
-              List.generate(pacientes.length, (i) => Text(pacientes[i].nome)),
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Align(
+                child: Text(
+                  "Monitorar pacientes:",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                alignment: Alignment.centerLeft,
+              ),
+            ),
+            Column(
+              children: List.generate(pacientes.length, (i) {
+                return Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                      color: Colors.grey[200],
+                    ),
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: SizedBox(
+                              child: Icon(
+                            Icons.person,
+                            size: 40,
+                          )),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Column(
+                            children: [
+                              Text(
+                                "${pacientes[i].nome}, ${pacientes[i].idade} anos.",
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w500),
+                              ),
+                              Text(pacientes[i].email)
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                );
+              }),
+            ),
+          ],
         ),
       ),
     );
