@@ -23,7 +23,8 @@ class _MedidasState extends State<Medidas> {
   String stress_option = "Baixo";
   String depression_option = "Baixo";
   String ativ_fis = "Nenhuma";
-
+  var dict = {'Baixo': 0, 'Moderado': 1, 'Alto': 2, 'Muito Alto': 3};
+  var dictfis = {'Nenhuma': 0, 'Leve': 1, 'Moderada': 2, 'Intensa': 3};
   int getMeanBPM() {
     double acc_bpm = 0;
     int n = data.length;
@@ -326,9 +327,9 @@ class _MedidasState extends State<Medidas> {
                             id_paciente: 1,
                             freq: this.bpmValue,
                             peso: double.parse(this.peso),
-                            stress: int.parse(this.stress_option),
-                            desanimo: int.parse(this.depression_option),
-                            atv_fisica: int.parse(this.ativ_fis),
+                            stress: this.dict[this.stress_option]!,
+                            desanimo: this.dict[this.depression_option]!,
+                            atv_fisica: this.dictfis[this.ativ_fis]!,
                           );
                           insertMedicao(medida);
                         },
